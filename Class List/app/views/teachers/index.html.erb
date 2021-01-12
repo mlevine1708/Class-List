@@ -1,0 +1,27 @@
+<h3>Find A Teacher</h3>
+
+  <%= form_tag teachers_path, method: :get do %>
+    <%= label_tag  "Search for a teacher by name:" %>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag ("Search"), name: nil %>
+  <% end %>
+  
+<h1>Students Listed By Teacher</h1>
+
+<ul>
+  <% @teachers.each do |teacher|%>
+    <li>
+      <%= link_to teacher.name, teacher_path(teacher) %>
+      <%= teacher.grade %>
+
+        <ul>
+          <% teacher.ordered_students.each do |student|%>
+          <li><strong><%= student.name %></strong> |
+            <%= student.grade%> grade |
+            Parent: <%= student.user.username%>
+          </li>
+          <% end %>
+        </ul>
+    </li>
+  <% end %>
+</ul>

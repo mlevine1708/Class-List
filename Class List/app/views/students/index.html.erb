@@ -1,0 +1,21 @@
+<h1>Student Directory</h1>
+
+<%= form_tag("/students", method: "get") do %>
+  <%= label_tag(:grade, "All students above grade:") %>
+  <%= number_field_tag(:grade) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<ul>
+
+        <ul>
+          <% @students.each do |student|%>
+          <li><strong><%= student.name %></strong> |
+            Grade <%= student.grade%> |
+            Parent: <%= student.user.username%> |
+            Email Address: <%= student.email%> |
+            Phone Number: <%= student.phone_number%>
+          </li>
+          <% end %>
+        </ul>
+</ul>

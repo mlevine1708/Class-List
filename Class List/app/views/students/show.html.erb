@@ -1,0 +1,10 @@
+<h1>Student</h1>
+
+<p> <%= @student.name %> is in grade <%= @student.grade%>. </p>
+
+<p><%= @student.teacher.name %> - <%= @student.teacher.grade %></p>
+
+<% if @student.user == current_user %>
+  <%= link_to "Edit Student", edit_student_path(@student) %>
+  <%= link_to "Delete Student", student_path(@student), method: :delete  %>
+<% end %>
