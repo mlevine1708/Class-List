@@ -1,0 +1,7 @@
+<% students.each do |student| %>
+    <p><%= link_to student.name, student_path(student) %> -
+      <%= student.grade%> -
+      <%= student.email%> -
+      parent: <%= student.user.try(:username) %> -
+      teacher: <%= student.teacher.try(:name) %></p>
+<% end %>
