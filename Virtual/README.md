@@ -15,3 +15,6 @@ This is a student directory app that allows a parent to create a directory of hi
 
 #License
 The app is available as open source under the terms of the MIT License.
+
+
+TEST
