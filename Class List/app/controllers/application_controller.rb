@@ -1,9 +1,14 @@
 class ApplicationController < ActionController::API
   include ApplicationHelper
-  before_action :check_for_logged_in
+ # before_action :check_for_logged_in
   
   def test
-    render json: { test: "success" }
+    students = []
+    Student.all.each do |student| 
+      students << student.attributes
+    end
+
+    render json: { students: students }.to_json
   end
 
   private

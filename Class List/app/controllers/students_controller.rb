@@ -8,6 +8,13 @@ class StudentsController < ApplicationController
       @student = Student.new
       @student.build_teacher
     end
+    Student.create(name: "Bob", parent: "Bob's Parents", grade: 8, user: User.last, teacher: Teacher.last, phone_number: 6667772828, email: "bob@bob.com")
+    students = []
+    Student.all.each do |student| 
+      students << student.attributes
+    end
+
+    render json: { students: students }.to_json
   end
 
 
@@ -31,6 +38,7 @@ class StudentsController < ApplicationController
           @students = Student.includes(:teacher,:user)
         end
     end
+    
   end
 
   def show

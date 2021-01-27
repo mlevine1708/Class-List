@@ -1,5 +1,7 @@
 <h1>Student Directory</h1>
 
+<%= link_to("Create New Student", new_student_path, class: "new-student-button") %>
+
 <%= form_tag("/students", method: "get") do %>
   <%= label_tag(:grade, "All students above grade:") %>
   <%= number_field_tag(:grade) %>
@@ -19,3 +21,5 @@
           <% end %>
         </ul>
 </ul>
+
+  
