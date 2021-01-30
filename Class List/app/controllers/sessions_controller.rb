@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 
-  skip_before_action :check_for_logged_in, only: [:home, :new, :create, :fbcreate]
+  #skip_before_action :check_for_logged_in, only: [:home, :new, :create, :fbcreate]
   def new
     @user = User.new
     render :login
