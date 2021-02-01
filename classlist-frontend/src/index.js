@@ -35,3 +35,13 @@ document.addEventListener("click",function(e){
   .then(response => response.json())
   .then(parsedResponse => renderList(parsedResponse))
 })
+
+class Student {
+  constructor(studentName, grade, parentName, phoneNumber, emailAddress) {
+    this.studentName = studentName;
+    this.grade = grade;
+    this.parentName = parentName;
+    this.phoneNumber = phoneNumber;
+    this.emailAddress = emailAddress
+  }
+}
