@@ -8,9 +8,8 @@ class StudentsController < ApplicationController
       @student = Student.new
       @student.build_teacher
     end
-    Student.create(name: "Bob", parent: "Bob's Parents", grade: 8, user: User.last, teacher: Teacher.last, phone_number: 6667772828, email: "bob@bob.com")
     students = []
-    Student.all.each do |student| 
+    Student.all.each do |student|
       students << student.attributes
     end
 
@@ -19,14 +18,14 @@ class StudentsController < ApplicationController
 
 
   def create
-    @student = current_user.students.build(student_params)
-    if @student.save
-      redirect_to student_path(@student)
-    else
-      @student.build_teacher unless @student.teacher
-      render :new
-    end
+    @student = Student.new(student_params.merge(teacher_id: current_teacher.id))
+      if @student.save
+			  render json: @student.attributes.to_json
+		  else
+        render json: {errors:@student.errors}
+      end
   end
+  
 
   def index
     if params[:teacher_id] && teacher = Teacher.find_by_id(params[:teacher_id])
@@ -38,7 +37,7 @@ class StudentsController < ApplicationController
           @students = Student.includes(:teacher,:user)
         end
     end
-    
+
   end
 
   def show
@@ -72,4 +71,4 @@ class StudentsController < ApplicationController
   def student_params
     params.require(:student).permit(:parent, :name, :grade, :email, :phone_number, :teacher_id, teacher_attributes: [:name, :search, :grade])
   end
-end
+end 

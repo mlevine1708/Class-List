@@ -11,6 +11,10 @@ class ApplicationController < ActionController::API
     render json: { students: students }.to_json
   end
 
+  def current_teacher
+    Teacher.find_by(name: "Kelly")
+  end 
+
   private
     def check_for_logged_in
       redirect_to '/' if !logged_in?
