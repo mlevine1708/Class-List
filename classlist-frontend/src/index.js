@@ -24,6 +24,7 @@ function renderList(response) {
     const parentName = document.createElement("td");
     const phoneNumber = document.createElement("td");
     const emailAddress = document.createElement("td");
+    const deleteButton = document.createElement("td");
     // console.log(response["students"][i]);
     const newStudent = new Student(
       response["students"][i].name,
@@ -37,12 +38,30 @@ function renderList(response) {
     parentName.textContent = newStudent.parentName;
     phoneNumber.textContent = newStudent.phoneNumber;
     emailAddress.textContent = newStudent.emailAddress;
+    deleteButton.innerHTML =
+      "<button class='deleteStudent' data-id='" +
+      response["students"][i].id +
+      "'>Delete</button>";
     row.append(studentName);
     row.append(grade);
     row.append(parentName);
     row.append(phoneNumber);
     row.append(emailAddress);
+    row.append(deleteButton);
     element.append(row);
+  }
+  const deleteStudentButtons = document.getElementsByClassName("deleteStudent");
+  for (var i = 0; i < deleteStudentButtons.length; i++) {
+    deleteStudentButtons[i].addEventListener("click", function (event) {
+      event.preventDefault();
+      fetch(`${BACKEND_URL}/students/${this.getAttribute("data-id")}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      this.closest("tr").remove();
+    });
   }
 }
 
@@ -69,11 +88,13 @@ submitButton.addEventListener("click", function (event) {
   //JS Collections Objects {} and Arrays []
   // const objectVariableName = {key1: value1, key2: value2}
   const studentInfo = {
-    name: studentNameValue,
-    grade: gradeValue,
-    parent: parentNameValue,
-    phone_number: phoneNumberValue,
-    email: emailAddressValue,
+    student: {
+      name: studentNameValue,
+      grade: gradeValue,
+      parent: parentNameValue,
+      phone_number: phoneNumberValue,
+      email: emailAddressValue,
+    },
   };
 
   //Send the data
@@ -84,10 +105,10 @@ submitButton.addEventListener("click", function (event) {
     },
     body: JSON.stringify(studentInfo), //Maybe don't stringify, but probably need to
   })
-    .then((response) => console.log("response", response))
+    .then((response) => console.log(response))
 
     .then((data) => {
-      console.log("Success:", data);
+      console.log(data);
     })
     .catch((error) => {
       console.error("Error:", error);
