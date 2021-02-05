@@ -25,6 +25,7 @@ function renderList(response) {
     const phoneNumber = document.createElement("td");
     const emailAddress = document.createElement("td");
     const deleteButton = document.createElement("td");
+    const updateButton = document.createElement("td");
     // console.log(response["students"][i]);
     const newStudent = new Student(
       response["students"][i].name,
@@ -42,12 +43,17 @@ function renderList(response) {
       "<button class='deleteStudent' data-id='" +
       response["students"][i].id +
       "'>Delete</button>";
+    updateButton.innerHTML =
+      "<button class='updateStudent' data-id='" +
+      response["students"][i].id +
+      "'>Update</button>";
     row.append(studentName);
     row.append(grade);
     row.append(parentName);
     row.append(phoneNumber);
     row.append(emailAddress);
     row.append(deleteButton);
+    row.append(updateButton);
     element.append(row);
   }
   const deleteStudentButtons = document.getElementsByClassName("deleteStudent");
