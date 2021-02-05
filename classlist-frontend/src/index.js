@@ -26,6 +26,7 @@ function renderList(response) {
     const emailAddress = document.createElement("td");
     const deleteButton = document.createElement("td");
     const updateButton = document.createElement("td");
+    const saveButton = document.createElement("td");
     // console.log(response["students"][i]);
     const newStudent = new Student(
       response["students"][i].name,
@@ -46,7 +47,11 @@ function renderList(response) {
     updateButton.innerHTML =
       "<button class='updateStudent' data-id='" +
       response["students"][i].id +
-      "'>Update</button>";
+      "'>Edit</button>";
+    saveButton.innerHTML =
+      "<button class='saveStudent' data-id='" +
+      response["students"][i].id +
+      "'>Save</button>";
     row.append(studentName);
     row.append(grade);
     row.append(parentName);
@@ -54,6 +59,7 @@ function renderList(response) {
     row.append(emailAddress);
     row.append(deleteButton);
     row.append(updateButton);
+    row.append(saveButton);
     element.append(row);
   }
   const deleteStudentButtons = document.getElementsByClassName("deleteStudent");
@@ -67,6 +73,62 @@ function renderList(response) {
         },
       });
       this.closest("tr").remove();
+    });
+  }
+
+  const updateStudentButtons = document.getElementsByClassName("updateStudent");
+  for (var i = 0; i < updateStudentButtons.length; i++) {
+    updateStudentButtons[i].addEventListener("click", function (event) {
+      event.preventDefault();
+      var row = this.closest("tr").children;
+      for (var j = 0; j < row.length; j++) {
+        if (row[j].getElementsByTagName("button").length > 0) {
+          continue;
+        }
+        row[j].innerHTML =
+          "<input type='text' class='form-field' value='" +
+          row[j].textContent +
+          "'>";
+      }
+    });
+  }
+
+  const saveStudentButtons = document.getElementsByClassName("saveStudent");
+  for (var i = 0; i < saveStudentButtons.length; i++) {
+    saveStudentButtons[i].addEventListener("click", function (event) {
+      event.preventDefault();
+
+      //Get the values of the student form
+      const studentNameValue = this.closest("tr").children[0].children[0].value;
+      const gradeValue = this.closest("tr").children[1].children[0].value;
+      const parentNameValue = this.closest("tr").children[2].children[0].value;
+      const phoneNumberValue = this.closest("tr").children[3].children[0].value;
+      const emailAddressValue = this.closest("tr").children[4].children[0]
+        .value;
+      const studentInfo = {
+        student: {
+          name: studentNameValue,
+          grade: gradeValue,
+          parent: parentNameValue,
+          phone_number: phoneNumberValue,
+          email: emailAddressValue,
+        },
+      };
+      fetch(`${BACKEND_URL}/students/${this.getAttribute("data-id")}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(studentInfo),
+      });
+      var row = this.closest("tr").children;
+      for (var j = 0; j < row.length; j++) {
+        if (row[j].getElementsByTagName("button").length > 0) {
+          continue;
+        }
+        row[j].innerHTML = "<td>" + row[j].children[0].value;
+        +"</td>";
+      }
     });
   }
 }
@@ -111,11 +173,10 @@ submitButton.addEventListener("click", function (event) {
     },
     body: JSON.stringify(studentInfo), //Maybe don't stringify, but probably need to
   })
-    .then((response) => console.log(response))
-
-    .then((data) => {
-      console.log(data);
+    .then((response) => {
+      location.reload();
     })
+
     .catch((error) => {
       console.error("Error:", error);
     });
