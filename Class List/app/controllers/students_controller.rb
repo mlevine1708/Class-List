@@ -48,7 +48,7 @@ class StudentsController < ApplicationController
 
   def update
     if @student.update(student_params)
-      redirect_to student_path(@student)
+      render json: @student.attributes.to_json
     else
       render :edit
     end
