@@ -181,3 +181,12 @@ submitButton.addEventListener("click", function (event) {
       console.error("Error:", error);
     });
 });
+
+let teacherCommentsForm = document.querySelector("#teacher-comments-form");
+
+teacherCommentsForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const teacherCommentsInput = document.querySelector("#teacher-input").value;
+  const teacherCommentsDiv = document.querySelector("#teacher-comments");
+  teacherCommentsDiv.innerHTML = teacherCommentsInput;
+});
